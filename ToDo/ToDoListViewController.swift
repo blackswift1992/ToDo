@@ -13,7 +13,7 @@ class ToDoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
         cell.textLabel?.text = itemArray[indexPath.row]
         
@@ -31,6 +31,9 @@ class ToDoListViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    
+    
 }
 
 
@@ -52,7 +55,9 @@ extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+    }
 }
 
 

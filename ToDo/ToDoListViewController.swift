@@ -56,7 +56,26 @@ extension ToDoListViewController {
 
 private extension ToDoListViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField: UITextField?
         
+        let alert = UIAlertController(title: "Add new ToDo Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add task", style: .default) {action in
+            print("add button was selected")
+            
+            guard let text = textField?.text else { return }
+            
+            print(text)
+        }
+        
+        alert.addAction(action) 
+        
+        alert.addTextField() { alertTextField in
+            alertTextField.placeholder = "Type your task"
+            textField = alertTextField
+        }
+        
+        present(alert, animated: true)
     }
 }
 

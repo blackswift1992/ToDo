@@ -1,7 +1,7 @@
 import UIKit
 
 class ToDoListViewController: UITableViewController {
-    let itemArray = ["QQQ", "WWW", "EEE", "RRR", "TTT", "YYY"]
+    var items = ["Buy milk", "Do my homework", "Pet my cat"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -9,13 +9,13 @@ class ToDoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemArray.count
+        return items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        cell.textLabel?.text = itemArray[indexPath.row]
+        cell.textLabel?.text = items[indexPath.row]
         
         return cell
     }
@@ -60,20 +60,24 @@ private extension ToDoListViewController {
         
         let alert = UIAlertController(title: "Add new ToDo Item", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add task", style: .default) {action in
-            print("add button was selected")
-            
-            guard let text = textField?.text else { return }
-            
-            print(text)
-        }
-        
-        alert.addAction(action) 
-        
         alert.addTextField() { alertTextField in
             alertTextField.placeholder = "Type your task"
             textField = alertTextField
         }
+        
+        let action = UIAlertAction(title: "Add task", style: .default) { [weak self] action in
+            guard let text = textField?.text else { return }
+
+            self?.items.append(text)
+            
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+        
+        alert.addAction(action)
+        
+        
         
         present(alert, animated: true)
     }

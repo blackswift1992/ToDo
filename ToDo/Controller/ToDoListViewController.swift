@@ -1,15 +1,16 @@
 import UIKit
 
 class ToDoListViewController: UITableViewController {
-    private var toDoListItems = ["Buy milk", "Do my homework", "Pet my cat"]
-    private let defaults = UserDefaults.standard
+    private var toDoListItems = [ToDoItem]()
+    
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("ToDoItems.plist")
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let defaultsToDoListItems = defaults.object(forKey: "toDoListItems") as? [String] {
-            toDoListItems = defaultsToDoListItems
-            tableView.reloadData()
-        }
+
+        toDoListItems.append(ToDoItem(taskName: "Buy bread"))
+        toDoListItems.append(ToDoItem(taskName: "Buy milk"))
+        toDoListItems.append(ToDoItem(taskName: "Buy apples"))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -19,25 +20,23 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        cell.textLabel?.text = toDoListItems[indexPath.row]
+        let toDoItem = toDoListItems[indexPath.row]
+        
+        cell.textLabel?.text = toDoItem.taskName
+        
+        cell.accessoryType = toDoItem.isDone ? .checkmark : .none
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
         
-        if cell.accessoryType == .checkmark {
-            cell.accessoryType = .none
-        } else {
-            cell.accessoryType = .checkmark
-        }
+        toDoListItems[indexPath.row].isDone = !(toDoListItems[indexPath.row].isDone)
+        
+        saveToDoItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
-    
 }
 
 
@@ -72,10 +71,9 @@ private extension ToDoListViewController {
         let action = UIAlertAction(title: "Add task", style: .default) { [weak self] action in
             guard let text = textField?.text else { return }
             
-            self?.toDoListItems.append(text)
-            self?.defaults.set(self?.toDoListItems, forKey: "toDoListItems")
-            self?.tableView.reloadData()
+            self?.toDoListItems.append(ToDoItem(taskName: text))
             
+            self?.saveToDoItems()
         }
         
         alert.addAction(action)
@@ -89,7 +87,20 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    
+    func saveToDoItems() {
+        guard let safeDataFilePath = dataFilePath else { return }
+        
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(toDoListItems)
+            try data.write(to: safeDataFilePath)
+        } catch {
+            print("Error with toDoListItems array encoding \(error)")
+        }
+        
+        tableView.reloadData()
+    }
 }
 
 

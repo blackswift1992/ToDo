@@ -7,10 +7,7 @@ class ToDoListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        toDoListItems.append(ToDoItem(taskName: "Buy bread"))
-        toDoListItems.append(ToDoItem(taskName: "Buy milk"))
-        toDoListItems.append(ToDoItem(taskName: "Buy apples"))
+        loadToDoItems()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,6 +105,19 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    
+    func loadToDoItems() {
+        guard let safeDataFilePath = dataFilePath else { return }
+        
+        do {
+            let data = try Data(contentsOf: safeDataFilePath)
+            
+            let decoder = PropertyListDecoder()
+            
+            toDoListItems = try decoder.decode([ToDoItem].self, from: data)
+            
+        } catch {
+            print("Decoding data was failed, \(error)")
+        }
+    }
 }
 

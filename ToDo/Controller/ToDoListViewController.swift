@@ -1,36 +1,38 @@
 import UIKit
+import CoreData
 
 class ToDoListViewController: UITableViewController {
-    private var toDoListItems = [ToDoItem]()
+    private var toDoItemsArray = [ToDoItem]()
+    private let dbContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("ToDoItems.plist")
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadToDoItems()
+        loadToDoItemsFromDb()
+        
+        //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toDoListItems.count
+        return toDoItemsArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let toDoItem = toDoListItems[indexPath.row]
+        let toDoItem = toDoItemsArray[indexPath.row]
         
-        cell.textLabel?.text = toDoItem.taskName
+        reusableCell.textLabel?.text = toDoItem.taskName
+        reusableCell.accessoryType = toDoItem.isDone ? .checkmark : .none
         
-        cell.accessoryType = toDoItem.isDone ? .checkmark : .none
-        
-        return cell
+        return reusableCell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        toDoListItems[indexPath.row].isDone = !(toDoListItems[indexPath.row].isDone)
+        toDoItemsArray[indexPath.row].isDone = !(toDoItemsArray[indexPath.row].isDone)
         
-        saveToDoItems()
+        saveChangesToDb()
+        tableView.reloadData()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -65,15 +67,19 @@ private extension ToDoListViewController {
             textField = alertTextField
         }
         
-        let action = UIAlertAction(title: "Add task", style: .default) { [weak self] action in
-            guard let text = textField?.text else { return }
+        alert.addAction(UIAlertAction(title: "Add task", style: .default) { [weak self] action in
+            guard let taskName = textField?.text,
+                  let safeDbContext = self?.dbContext
+            else { return }
             
-            self?.toDoListItems.append(ToDoItem(taskName: text))
+            let newToDoItem = ToDoItem(context: safeDbContext)
+            newToDoItem.taskName = taskName
+            newToDoItem.isDone = false
             
-            self?.saveToDoItems()
-        }
-        
-        alert.addAction(action)
+            self?.toDoItemsArray.append(newToDoItem)
+            self?.saveChangesToDb()
+            self?.tableView.reloadData()
+        })
         
         present(alert, animated: true)
     }
@@ -84,19 +90,14 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    func saveToDoItems() {
-        guard let safeDataFilePath = dataFilePath else { return }
-        
-        let encoder = PropertyListEncoder()
+    func saveChangesToDb() {
+        guard let safeDbContext = dbContext else { return }
         
         do {
-            let data = try encoder.encode(toDoListItems)
-            try data.write(to: safeDataFilePath)
+            try safeDbContext.save()
         } catch {
-            print("Error with toDoListItems array encoding \(error)")
+            print("Error with toDoItems saving, \(error)")
         }
-        
-        tableView.reloadData()
     }
 }
 
@@ -105,18 +106,15 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    func loadToDoItems() {
-        guard let safeDataFilePath = dataFilePath else { return }
-        
+    func loadToDoItemsFromDb() {
+        let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
+
         do {
-            let data = try Data(contentsOf: safeDataFilePath)
-            
-            let decoder = PropertyListDecoder()
-            
-            toDoListItems = try decoder.decode([ToDoItem].self, from: data)
-            
+            if let fetchedToDoItems = try dbContext?.fetch(request) {
+                toDoItemsArray = fetchedToDoItems
+            }
         } catch {
-            print("Decoding data was failed, \(error)")
+            print("Fetching data from context was failed, \(error)")
         }
     }
 }

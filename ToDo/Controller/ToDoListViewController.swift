@@ -61,10 +61,8 @@ extension ToDoListViewController {
 extension ToDoListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
-        print(text)
-        
+
         if !text.isEmpty {
-            
             let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
             
             request.predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
@@ -72,16 +70,17 @@ extension ToDoListViewController: UISearchResultsUpdating {
             request.sortDescriptors = [NSSortDescriptor(key: "taskName", ascending: true)]
             
             loadToDoItemsFromDb(with: request)
-            tableView.reloadData()
         } else {
             loadToDoItemsFromDb()
-            tableView.reloadData()
         }
+        
+        tableView.reloadData()
     }
 }
 
 
 //MARK: - UISearchBarDelegate
+
 
 extension ToDoListViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

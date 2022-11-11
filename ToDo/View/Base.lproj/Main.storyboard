@@ -8,6 +8,38 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Category Table View Controller-->
+        <scene sceneID="3R3-DI-U2a">
+            <objects>
+                <tableViewController id="YwJ-Z5-14v" customClass="CategoryTableViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="hoV-Cu-5Ln">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryCell" id="Hvk-sU-qmB">
+                                <rect key="frame" x="0.0" y="50" width="390" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hvk-sU-qmB" id="Dzm-hT-hyW">
+                                    <rect key="frame" x="0.0" y="0.0" width="390" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="YwJ-Z5-14v" id="VPs-8K-SR4"/>
+                            <outlet property="delegate" destination="YwJ-Z5-14v" id="9VC-DT-r2T"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Frj-CP-CvX"/>
+                    <connections>
+                        <segue destination="N3E-0r-4BI" kind="show" identifier="goToToDoItems" id="Jri-Rf-9nl"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Fp-0J-3oQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="909" y="4"/>
+        </scene>
         <!--ToDo-->
         <scene sceneID="uou-41-W5i">
             <objects>
@@ -42,7 +74,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pP8-mr-wzh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="857" y="4"/>
+            <point key="canvasLocation" x="1772" y="4"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5t1-S0-N12">
@@ -59,7 +91,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="N3E-0r-4BI" kind="relationship" relationship="rootViewController" id="Lvi-Vv-Ga5"/>
+                        <segue destination="YwJ-Z5-14v" kind="relationship" relationship="rootViewController" id="7Tc-ps-t17"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gXc-Yy-GK2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

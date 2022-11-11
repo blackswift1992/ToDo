@@ -2,11 +2,19 @@ import UIKit
 import CoreData
 
 class ToDoListViewController: UITableViewController {
+    private let searchController = UISearchController()
+    
     private var toDoItemsArray = [ToDoItem]()
     private let dbContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.tintColor = .white
+        navigationItem.searchController = searchController
+        
         loadToDoItemsFromDb()
         
         //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
@@ -47,10 +55,39 @@ extension ToDoListViewController {
 }
 
 
-//MARK: - Protocols
+//MARK: - UISearchResultsUpdating
 
 
+extension ToDoListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        print(text)
+        
+        if !text.isEmpty {
+            
+            let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
+            
+            request.predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
+            
+            request.sortDescriptors = [NSSortDescriptor(key: "taskName", ascending: true)]
+            
+            loadToDoItemsFromDb(with: request)
+            tableView.reloadData()
+        } else {
+            loadToDoItemsFromDb()
+            tableView.reloadData()
+        }
+    }
+}
 
+
+//MARK: - UISearchBarDelegate
+
+extension ToDoListViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+//        loadToDoItemsFromDb()   //не працює так як після цього визову відбувається ще декілька викликів метода updateSearchResults()
+    }
+}
 
 
 //MARK: - @IBActions
@@ -90,6 +127,17 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
+    func loadToDoItemsFromDb(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()) {
+
+        do {
+            if let fetchedToDoItems = try dbContext?.fetch(request) {
+                toDoItemsArray = fetchedToDoItems
+            }
+        } catch {
+            print("Fetching data from context was failed, \(error)")
+        }
+    }
+    
     func saveChangesToDb() {
         guard let safeDbContext = dbContext else { return }
         
@@ -106,16 +154,6 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    func loadToDoItemsFromDb() {
-        let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-
-        do {
-            if let fetchedToDoItems = try dbContext?.fetch(request) {
-                toDoItemsArray = fetchedToDoItems
-            }
-        } catch {
-            print("Fetching data from context was failed, \(error)")
-        }
-    }
+    
 }
 

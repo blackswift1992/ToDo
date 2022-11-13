@@ -3,9 +3,15 @@ import CoreData
 
 class ToDoListViewController: UITableViewController {
     private let searchController = UISearchController()
-    
+
     private var toDoItemsArray = [ToDoItem]()
     private let dbContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    
+    private var selectedCategory: ToDoCategory? {
+        didSet {
+            loadToDoItemsFromDb()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,9 +20,7 @@ class ToDoListViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.tintColor = .white
         navigationItem.searchController = searchController
-        
-        loadToDoItemsFromDb()
-        
+
         //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
@@ -51,7 +55,9 @@ class ToDoListViewController: UITableViewController {
 
 
 extension ToDoListViewController {
-    
+    func setSelectedCategory(_ category: ToDoCategory) {
+        selectedCategory = category
+    }
 }
 
 
@@ -65,11 +71,11 @@ extension ToDoListViewController: UISearchResultsUpdating {
         if !text.isEmpty {
             let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
             
-            request.predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
+            let predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
             
             request.sortDescriptors = [NSSortDescriptor(key: "taskName", ascending: true)]
             
-            loadToDoItemsFromDb(with: request)
+            loadToDoItemsFromDb(with: request, additionalPredicate: predicate)
         } else {
             loadToDoItemsFromDb()
         }
@@ -105,12 +111,14 @@ private extension ToDoListViewController {
         
         alert.addAction(UIAlertAction(title: "Add task", style: .default) { [weak self] action in
             guard let taskName = textField?.text,
-                  let safeDbContext = self?.dbContext
+                  let safeDbContext = self?.dbContext,
+                  let safeSelectedCategory = self?.selectedCategory
             else { return }
             
             let newToDoItem = ToDoItem(context: safeDbContext)
             newToDoItem.taskName = taskName
             newToDoItem.isDone = false
+            newToDoItem.parentCategory = safeSelectedCategory
             
             self?.toDoItemsArray.append(newToDoItem)
             self?.saveChangesToDb()
@@ -126,7 +134,16 @@ private extension ToDoListViewController {
 
 
 private extension ToDoListViewController {
-    func loadToDoItemsFromDb(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()) {
+    func loadToDoItemsFromDb(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest(), additionalPredicate: NSPredicate?  = nil) {
+        guard let categoryName = selectedCategory?.name else { return }
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
+        
+        if let safeAdditionalPredicate = additionalPredicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, safeAdditionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
 
         do {
             if let fetchedToDoItems = try dbContext?.fetch(request) {

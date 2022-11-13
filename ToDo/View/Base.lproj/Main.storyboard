@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Category Table View Controller-->
+        <!--ToDo Categories-->
         <scene sceneID="3R3-DI-U2a">
             <objects>
                 <tableViewController id="YwJ-Z5-14v" customClass="CategoryTableViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryCell" id="Hvk-sU-qmB">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToDoCategoryCell" id="Hvk-sU-qmB">
                                 <rect key="frame" x="0.0" y="50" width="390" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hvk-sU-qmB" id="Dzm-hT-hyW">
@@ -31,7 +31,14 @@
                             <outlet property="delegate" destination="YwJ-Z5-14v" id="9VC-DT-r2T"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Frj-CP-CvX"/>
+                    <navigationItem key="navigationItem" title="ToDo Categories" id="Frj-CP-CvX">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="UfN-gK-mmX">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="YwJ-Z5-14v" id="JT2-zq-oCM"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="N3E-0r-4BI" kind="show" identifier="goToToDoItems" id="Jri-Rf-9nl"/>
                     </connections>
@@ -40,7 +47,7 @@
             </objects>
             <point key="canvasLocation" x="909" y="4"/>
         </scene>
-        <!--ToDo-->
+        <!--ToDo Items-->
         <scene sceneID="uou-41-W5i">
             <objects>
                 <tableViewController id="N3E-0r-4BI" customClass="ToDoListViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
@@ -63,7 +70,7 @@
                             <outlet property="delegate" destination="N3E-0r-4BI" id="uBc-Hp-GDw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="ToDo" id="Suz-st-JDv">
+                    <navigationItem key="navigationItem" title="ToDo Items" id="Suz-st-JDv">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ezq-Aa-YMd">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -99,6 +106,7 @@
             <point key="canvasLocation" x="49.230769230769226" y="3.5545023696682461"/>
         </scene>
     </scenes>
+    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

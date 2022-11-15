@@ -2,11 +2,11 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ToDoCategory" representedClassName=".ToDoCategory" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
-        <relationship name="toDoItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ToDoItem"/>
+        <relationship name="toDoItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ToDoItem" inverseName="parentCategory" inverseEntity="ToDoItem"/>
     </entity>
     <entity name="ToDoItem" representedClassName=".ToDoItem" syncable="YES" codeGenerationType="class">
         <attribute name="isDone" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskName" attributeType="String"/>
-        <relationship name="parentCategory" maxCount="1" deletionRule="Nullify" destinationEntity="ToDoCategory"/>
+        <relationship name="parentCategory" maxCount="1" deletionRule="Nullify" destinationEntity="ToDoCategory" inverseName="toDoItems" inverseEntity="ToDoCategory"/>
     </entity>
 </model>

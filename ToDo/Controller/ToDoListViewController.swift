@@ -9,7 +9,7 @@ class ToDoListViewController: UITableViewController {
     
     private var selectedCategory: ToDoCategory? {
         didSet {
-            loadToDoItemsFromDb()
+//            loadToDoItemsFromDb()
         }
     }
     
@@ -43,7 +43,7 @@ class ToDoListViewController: UITableViewController {
         
         toDoItemsArray[indexPath.row].isDone = !(toDoItemsArray[indexPath.row].isDone)
         
-        saveChangesToDb()
+//        saveChangesToDb()
         tableView.reloadData()
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -66,21 +66,21 @@ extension ToDoListViewController {
 
 extension ToDoListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-
-        if !text.isEmpty {
-            let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-            
-            let predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
-            
-            request.sortDescriptors = [NSSortDescriptor(key: "taskName", ascending: true)]
-            
-            loadToDoItemsFromDb(with: request, additionalPredicate: predicate)
-        } else {
-            loadToDoItemsFromDb()
-        }
-        
-        tableView.reloadData()
+//        guard let text = searchController.searchBar.text else { return }
+//
+//        if !text.isEmpty {
+//            let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
+//
+//            let predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
+//
+//            request.sortDescriptors = [NSSortDescriptor(key: "taskName", ascending: true)]
+//
+//            loadToDoItemsFromDb(with: request, additionalPredicate: predicate)
+//        } else {
+//            loadToDoItemsFromDb()
+//        }
+//
+//        tableView.reloadData()
     }
 }
 
@@ -114,14 +114,14 @@ private extension ToDoListViewController {
                   let safeDbContext = self?.dbContext,
                   let safeSelectedCategory = self?.selectedCategory
             else { return }
+//
+//            let newToDoItem = ToDoItem(context: safeDbContext)
+//            newToDoItem.taskName = taskName
+//            newToDoItem.isDone = false
+//            newToDoItem.parentCategory = safeSelectedCategory
             
-            let newToDoItem = ToDoItem(context: safeDbContext)
-            newToDoItem.taskName = taskName
-            newToDoItem.isDone = false
-            newToDoItem.parentCategory = safeSelectedCategory
-            
-            self?.toDoItemsArray.append(newToDoItem)
-            self?.saveChangesToDb()
+//            self?.toDoItemsArray.append(newToDoItem)
+//            self?.saveChangesToDb()
             self?.tableView.reloadData()
         })
         
@@ -131,40 +131,40 @@ private extension ToDoListViewController {
 
 
 //MARK: - Private methods
-
-
-private extension ToDoListViewController {
-    func loadToDoItemsFromDb(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest(), additionalPredicate: NSPredicate?  = nil) {
-        guard let categoryName = selectedCategory?.name else { return }
-        
-        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
-        
-        if let safeAdditionalPredicate = additionalPredicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, safeAdditionalPredicate])
-        } else {
-            request.predicate = categoryPredicate
-        }
-
-        do {
-            if let fetchedToDoItems = try dbContext?.fetch(request) {
-                toDoItemsArray = fetchedToDoItems
-            }
-        } catch {
-            print("Fetching data from context was failed, \(error)")
-        }
-    }
-    
-    func saveChangesToDb() {
-        guard let safeDbContext = dbContext else { return }
-        
-        do {
-            try safeDbContext.save()
-        } catch {
-            print("Error with toDoItems saving, \(error)")
-        }
-    }
-}
-
+//
+//
+//private extension ToDoListViewController {
+//    func loadToDoItemsFromDb(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest(), additionalPredicate: NSPredicate?  = nil) {
+//        guard let categoryName = selectedCategory?.name else { return }
+//
+//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
+//
+//        if let safeAdditionalPredicate = additionalPredicate {
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, safeAdditionalPredicate])
+//        } else {
+//            request.predicate = categoryPredicate
+//        }
+//
+//        do {
+//            if let fetchedToDoItems = try dbContext?.fetch(request) {
+//                toDoItemsArray = fetchedToDoItems
+//            }
+//        } catch {
+//            print("Fetching data from context was failed, \(error)")
+//        }
+//    }
+//
+//    func saveChangesToDb() {
+//        guard let safeDbContext = dbContext else { return }
+//
+//        do {
+//            try safeDbContext.save()
+//        } catch {
+//            print("Error with toDoItems saving, \(error)")
+//        }
+//    }
+//}
+//
 
 //MARK: - Set up methods
 

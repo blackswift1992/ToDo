@@ -7,9 +7,11 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryTableViewController: UITableViewController {
+    let realm = try! Realm()
+    
     private let searchController = UISearchController()
     
     private var categoriesArray = [ToDoCategory]()
@@ -23,7 +25,7 @@ class CategoryTableViewController: UITableViewController {
         searchController.searchBar.tintColor = .white
         navigationItem.searchController = searchController
         
-        loadCategoriesFromDb()
+//        loadCategoriesFromDb()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -70,19 +72,19 @@ extension CategoryTableViewController {
 
 extension CategoryTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-
-        if !text.isEmpty {
-            let request: NSFetchRequest<ToDoCategory> = ToDoCategory.fetchRequest()
-            
-            request.predicate = NSPredicate(format: "name CONTAINS[cd] %@", text)
-            
-            request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-            
-            loadCategoriesFromDb(with: request)
-        } else {
-            loadCategoriesFromDb()
-        }
+//        guard let text = searchController.searchBar.text else { return }
+        
+//        if !text.isEmpty {
+//            let request: NSFetchRequest<ToDoCategory> = ToDoCategory.fetchRequest()
+//
+//            request.predicate = NSPredicate(format: "name CONTAINS[cd] %@", text)
+//
+//            request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+//
+//            loadCategoriesFromDb(with: request)
+//        } else {
+//            loadCategoriesFromDb()
+//        }
         
         tableView.reloadData()
     }
@@ -114,15 +116,13 @@ private extension CategoryTableViewController {
         }
         
         alert.addAction(UIAlertAction(title: "Add category", style: .default) { [weak self] action in
-            guard let name = textField?.text,
-                  let safeDbContext = self?.dbContext
-            else { return }
+            guard let name = textField?.text else { return }
             
-            let newCategory = ToDoCategory(context: safeDbContext)
+            let newCategory = ToDoCategory()
             newCategory.name = name
             
             self?.categoriesArray.append(newCategory)
-            self?.saveChangesToDb()
+            self?.saveCategoryToRealm(newCategory)
             self?.tableView.reloadData()
         })
         
@@ -135,24 +135,24 @@ private extension CategoryTableViewController {
 
 
 private extension CategoryTableViewController {
-    func loadCategoriesFromDb(with request: NSFetchRequest<ToDoCategory> = ToDoCategory.fetchRequest()) {
-
+//    func loadCategoriesFromDb(with request: NSFetchRequest<ToDoCategory> = ToDoCategory.fetchRequest()) {
+//
+//        do {
+//            if let fetchedCategories = try dbContext?.fetch(request) {
+//                categoriesArray = fetchedCategories
+//            }
+//        } catch {
+//            print("Fetching data from context was failed, \(error)")
+//        }
+//    }
+    
+    func saveCategoryToRealm(_ category: ToDoCategory) {
         do {
-            if let fetchedCategories = try dbContext?.fetch(request) {
-                categoriesArray = fetchedCategories
+            try realm.write {
+                realm.add(category)
             }
         } catch {
-            print("Fetching data from context was failed, \(error)")
-        }
-    }
-    
-    func saveChangesToDb() {
-        guard let safeDbContext = dbContext else { return }
-        
-        do {
-            try safeDbContext.save()
-        } catch {
-            print("Error with toDoItems saving, \(error)")
+            print("Error with category saving, \(error)")
         }
     }
 }

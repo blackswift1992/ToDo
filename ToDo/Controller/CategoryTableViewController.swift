@@ -99,7 +99,6 @@ extension CategoryTableViewController: UISearchResultsUpdating {
 
 extension CategoryTableViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        loadToDoItemsFromDb()   //не працює так як після цього визову відбувається ще декілька викликів метода updateSearchResults()
     }
 }
 

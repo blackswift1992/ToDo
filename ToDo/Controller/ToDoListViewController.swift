@@ -44,11 +44,17 @@ class ToDoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-//        safeItems[indexPath.row].isDone = !(safeItems[indexPath.row].isDone)
-//
-//
-//                saveItemToRealm()
-//        tableView.reloadData()
+        if let item = items?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    item.isDone = !item.isDone
+                }
+            } catch {
+                print("Error with isDone property changing, \(error)")
+            }
+            
+            tableView.reloadData()
+        }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -94,7 +100,6 @@ extension ToDoListViewController: UISearchResultsUpdating {
 
 extension ToDoListViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        loadToDoItemsFromDb()   //не працює так як після цього визову відбувається ще декілька викликів метода updateSearchResults()
     }
 }
 
@@ -143,24 +148,11 @@ private extension ToDoListViewController {
     func loadItemsFromRealm() {
         items = selectedCategory?.items.sorted(byKeyPath: "taskName")
     }
-
-//    func saveItemToRealm(_ item: ToDoItem) {
-//        do {
-//            try realm.write {
-//                realm.add(item)
-//            }
-//        } catch {
-//            print("Error with item saving, \(error)")
-//        }
-//    }
 }
 
 
 //MARK: - Set up methods
 
 
-private extension ToDoListViewController {
-    
-    
-}
+private extension ToDoListViewController {}
 

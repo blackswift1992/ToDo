@@ -22,7 +22,9 @@ class ToDoListViewController: UITableViewController {
         searchController.searchBar.tintColor = .white
         navigationItem.searchController = searchController
 
-        //        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+                print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
+        print(Date().timeIntervalSince1970.description)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,7 +45,6 @@ class ToDoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         if let item = items?[indexPath.row] {
             do {
                 try self.realm.write {
@@ -76,8 +77,20 @@ extension ToDoListViewController {
 
 extension ToDoListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-//        guard let text = searchController.searchBar.text else { return }
-//
+        guard let text = searchController.searchBar.text else { return }
+        
+        if !text.isEmpty {
+            loadItemsFromRealm()
+            
+            items = items?.filter("taskName CONTAINS[cd] %@", text).sorted(byKeyPath: "creationDate")
+        } else {
+            loadItemsFromRealm()
+        }
+        
+        tableView.reloadData()
+        
+        
+
 //        if !text.isEmpty {
 //            let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
 //
@@ -89,7 +102,6 @@ extension ToDoListViewController: UISearchResultsUpdating {
 //        } else {
 //            loadToDoItemsFromDb()
 //        }
-//
 //        tableView.reloadData()
     }
 }
@@ -126,6 +138,7 @@ private extension ToDoListViewController {
                     try self.realm.write {
                         let newToDoItem = ToDoItem()
                         newToDoItem.taskName = taskName
+                        newToDoItem.creationDate = Date()
                         safeSelectedCategory.items.append(newToDoItem)
                     }
                 } catch {
@@ -146,7 +159,7 @@ private extension ToDoListViewController {
 
 private extension ToDoListViewController {
     func loadItemsFromRealm() {
-        items = selectedCategory?.items.sorted(byKeyPath: "taskName")
+        items = selectedCategory?.items.sorted(byKeyPath: "creationDate")
     }
 }
 

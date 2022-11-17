@@ -55,7 +55,7 @@ class ToDoListViewController: UITableViewController {
 
 
 extension ToDoListViewController {
-    func setSelectedCategory(_ category: ToDoCategory) {
+    func setSelectedCategory(_ category: ToDoCategory?) {
         selectedCategory = category
     }
 }
@@ -110,10 +110,10 @@ private extension ToDoListViewController {
         }
         
         alert.addAction(UIAlertAction(title: "Add task", style: .default) { [weak self] action in
-            guard let taskName = textField?.text,
-                  let safeDbContext = self?.dbContext,
-                  let safeSelectedCategory = self?.selectedCategory
-            else { return }
+//            guard let taskName = textField?.text,
+//                  let safeDbContext = self?.dbContext,
+//                  let safeSelectedCategory = self?.selectedCategory
+//            else { return }
 //
 //            let newToDoItem = ToDoItem(context: safeDbContext)
 //            newToDoItem.taskName = taskName

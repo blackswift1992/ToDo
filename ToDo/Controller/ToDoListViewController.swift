@@ -1,15 +1,16 @@
 import UIKit
-import CoreData
+import RealmSwift
 
 class ToDoListViewController: UITableViewController {
     private let searchController = UISearchController()
+    
+    private let realm = try! Realm()
 
-    private var toDoItemsArray = [ToDoItem]()
-    private let dbContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    private var items: Results<ToDoItem>?
     
     private var selectedCategory: ToDoCategory? {
         didSet {
-//            loadToDoItemsFromDb()
+            loadItemsFromRealm()
         }
     }
     
@@ -25,26 +26,29 @@ class ToDoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toDoItemsArray.count
+        return items?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let toDoItem = toDoItemsArray[indexPath.row]
-        
-        reusableCell.textLabel?.text = toDoItem.taskName
-        reusableCell.accessoryType = toDoItem.isDone ? .checkmark : .none
+        if let item = items?[indexPath.row] {
+            reusableCell.textLabel?.text = item.taskName
+            reusableCell.accessoryType = item.isDone ? .checkmark : .none
+        } else {
+            reusableCell.textLabel?.text = "No Tasks added yet"
+        }
         
         return reusableCell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        toDoItemsArray[indexPath.row].isDone = !(toDoItemsArray[indexPath.row].isDone)
-        
-//        saveChangesToDb()
-        tableView.reloadData()
+//        safeItems[indexPath.row].isDone = !(safeItems[indexPath.row].isDone)
+//
+//
+//                saveItemToRealm()
+//        tableView.reloadData()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -102,27 +106,29 @@ private extension ToDoListViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField: UITextField?
         
-        let alert = UIAlertController(title: "Add new ToDo Item", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add new ToDo task", message: "", preferredStyle: .alert)
         
         alert.addTextField() { alertTextField in
             alertTextField.placeholder = "Type your task"
             textField = alertTextField
         }
         
-        alert.addAction(UIAlertAction(title: "Add task", style: .default) { [weak self] action in
-//            guard let taskName = textField?.text,
-//                  let safeDbContext = self?.dbContext,
-//                  let safeSelectedCategory = self?.selectedCategory
-//            else { return }
-//
-//            let newToDoItem = ToDoItem(context: safeDbContext)
-//            newToDoItem.taskName = taskName
-//            newToDoItem.isDone = false
-//            newToDoItem.parentCategory = safeSelectedCategory
-            
-//            self?.toDoItemsArray.append(newToDoItem)
-//            self?.saveChangesToDb()
-            self?.tableView.reloadData()
+        alert.addAction(UIAlertAction(title: "Add task", style: .default) { action in
+            if let taskName = textField?.text,
+               let safeSelectedCategory = self.selectedCategory {
+                
+                do {
+                    try self.realm.write {
+                        let newToDoItem = ToDoItem()
+                        newToDoItem.taskName = taskName
+                        safeSelectedCategory.items.append(newToDoItem)
+                    }
+                } catch {
+                    print("Error with item saving, \(error)")
+                }
+                
+                self.tableView.reloadData()
+            }
         })
         
         present(alert, animated: true)
@@ -131,40 +137,24 @@ private extension ToDoListViewController {
 
 
 //MARK: - Private methods
-//
-//
-//private extension ToDoListViewController {
-//    func loadToDoItemsFromDb(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest(), additionalPredicate: NSPredicate?  = nil) {
-//        guard let categoryName = selectedCategory?.name else { return }
-//
-//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName)
-//
-//        if let safeAdditionalPredicate = additionalPredicate {
-//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, safeAdditionalPredicate])
-//        } else {
-//            request.predicate = categoryPredicate
-//        }
-//
+
+
+private extension ToDoListViewController {
+    func loadItemsFromRealm() {
+        items = selectedCategory?.items.sorted(byKeyPath: "taskName")
+    }
+
+//    func saveItemToRealm(_ item: ToDoItem) {
 //        do {
-//            if let fetchedToDoItems = try dbContext?.fetch(request) {
-//                toDoItemsArray = fetchedToDoItems
+//            try realm.write {
+//                realm.add(item)
 //            }
 //        } catch {
-//            print("Fetching data from context was failed, \(error)")
+//            print("Error with item saving, \(error)")
 //        }
 //    }
-//
-//    func saveChangesToDb() {
-//        guard let safeDbContext = dbContext else { return }
-//
-//        do {
-//            try safeDbContext.save()
-//        } catch {
-//            print("Error with toDoItems saving, \(error)")
-//        }
-//    }
-//}
-//
+}
+
 
 //MARK: - Set up methods
 

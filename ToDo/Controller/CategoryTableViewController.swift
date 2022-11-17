@@ -25,6 +25,8 @@ class CategoryTableViewController: UITableViewController {
         navigationItem.searchController = searchController
         
         loadCategoriesFromRealm()
+        
+        //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -109,7 +111,7 @@ private extension CategoryTableViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField: UITextField?
         
-        let alert = UIAlertController(title: "Add new Category", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add new category", message: "", preferredStyle: .alert)
         
         alert.addTextField() { alertTextField in
             alertTextField.placeholder = "Type category name"
@@ -140,6 +142,7 @@ private extension CategoryTableViewController {
     }
     
     func saveCategoryToRealm(_ category: ToDoCategory) {
+        
         do {
             try realm.write {
                 realm.add(category)

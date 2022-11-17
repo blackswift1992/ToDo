@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--ToDo Categories-->
+        <!--Categories-->
         <scene sceneID="3R3-DI-U2a">
             <objects>
                 <tableViewController id="YwJ-Z5-14v" customClass="CategoryTableViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,7 +31,7 @@
                             <outlet property="delegate" destination="YwJ-Z5-14v" id="9VC-DT-r2T"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="ToDo Categories" id="Frj-CP-CvX">
+                    <navigationItem key="navigationItem" title="Categories" id="Frj-CP-CvX">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="UfN-gK-mmX">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -47,7 +47,7 @@
             </objects>
             <point key="canvasLocation" x="909" y="4"/>
         </scene>
-        <!--ToDo Items-->
+        <!--Tasks-->
         <scene sceneID="uou-41-W5i">
             <objects>
                 <tableViewController id="N3E-0r-4BI" customClass="ToDoListViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
@@ -70,7 +70,7 @@
                             <outlet property="delegate" destination="N3E-0r-4BI" id="uBc-Hp-GDw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="ToDo Items" id="Suz-st-JDv">
+                    <navigationItem key="navigationItem" title="Tasks" id="Suz-st-JDv">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ezq-Aa-YMd">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>

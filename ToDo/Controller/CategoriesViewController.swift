@@ -96,6 +96,8 @@ private extension CategoriesViewController {
             textField = alertTextField
         }
         
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        
         alert.addAction(UIAlertAction(title: "Add category", style: .default) { _ in
             guard let name = textField?.text else { return }
             

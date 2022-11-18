@@ -107,6 +107,8 @@ private extension TasksViewController {
             textField = alertTextField
         }
         
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        
         alert.addAction(UIAlertAction(title: "Add task", style: .default) { action in
             if let taskName = textField?.text,
                let safeSelectedCategory = self.selectedCategory {

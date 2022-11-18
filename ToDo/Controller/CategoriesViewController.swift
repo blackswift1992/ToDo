@@ -47,7 +47,7 @@ class CategoriesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if categories != nil {
-            performSegue(withIdentifier: "goToToDoItems", sender: self)
+            performSegue(withIdentifier: "goToTasks", sender: self)
         }
 
         tableView.deselectRow(at: indexPath, animated: true)

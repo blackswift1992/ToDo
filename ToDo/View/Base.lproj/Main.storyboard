@@ -40,7 +40,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="N3E-0r-4BI" kind="show" identifier="goToToDoItems" id="Jri-Rf-9nl"/>
+                        <segue destination="N3E-0r-4BI" kind="show" identifier="goToTasks" id="Jri-Rf-9nl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Fp-0J-3oQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

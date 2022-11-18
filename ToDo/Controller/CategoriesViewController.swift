@@ -75,19 +75,15 @@ extension CategoriesViewController {
 
 extension CategoriesViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-//        guard let text = searchController.searchBar.text else { return }
+        guard let text = searchController.searchBar.text else { return }
         
-//        if !text.isEmpty {
-//            let request: NSFetchRequest<ToDoCategory> = ToDoCategory.fetchRequest()
-//
-//            request.predicate = NSPredicate(format: "name CONTAINS[cd] %@", text)
-//
-//            request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-//
-//            loadCategoriesFromDb(with: request)
-//        } else {
-//            loadCategoriesFromDb()
-//        }
+        if !text.isEmpty {
+            loadCategoriesFromRealm()
+            
+            categories = categories?.filter("name CONTAINS[cd] %@", text).sorted(byKeyPath: "name")
+        } else {
+            loadCategoriesFromRealm()
+        }
         
         tableView.reloadData()
     }

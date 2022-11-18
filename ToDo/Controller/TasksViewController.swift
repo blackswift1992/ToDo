@@ -20,6 +20,10 @@ class TasksViewController: UITableViewController {
         setUpSearchController()
     }
     
+    
+    //MARK: -- TableView Datasource Methods
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks?.count ?? 1
     }
@@ -36,6 +40,10 @@ class TasksViewController: UITableViewController {
         
         return reusableCell
     }
+    
+    
+    //MARK: -- TableView Delegate Methods
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let task = tasks?[indexPath.row] {

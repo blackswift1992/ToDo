@@ -16,6 +16,10 @@ class CategoriesViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    
+    //MARK: -- TableView Datasource Methods
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories?.count ?? 1
     }
@@ -30,6 +34,10 @@ class CategoriesViewController: UITableViewController {
         return reusableCell
     }
     
+    
+    //MARK: -- TableView Delegate Methods
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if categories != nil {
@@ -38,6 +46,10 @@ class CategoriesViewController: UITableViewController {
 
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    
+    //MARK: -- prepare for segue
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? TasksViewController,

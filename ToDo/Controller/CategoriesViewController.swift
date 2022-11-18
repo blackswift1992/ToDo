@@ -35,7 +35,7 @@ class CategoriesViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoCategoryCell", for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: K.TableView.categoryCellId, for: indexPath)
         
         let category = categories?[indexPath.row]
         
@@ -47,7 +47,7 @@ class CategoriesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if categories != nil {
-            performSegue(withIdentifier: "goToTasks", sender: self)
+            performSegue(withIdentifier: K.Segue.goToTasks, sender: self)
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
@@ -80,7 +80,7 @@ extension CategoriesViewController: UISearchResultsUpdating {
         if !text.isEmpty {
             loadCategoriesFromRealm()
             
-            categories = categories?.filter("name CONTAINS[cd] %@", text).sorted(byKeyPath: "name")
+            categories = categories?.filter(K.RealmDb.searchByNamePredicate, text).sorted(byKeyPath: K.RealmDb.Category.name)
         } else {
             loadCategoriesFromRealm()
         }

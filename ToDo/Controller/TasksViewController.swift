@@ -31,7 +31,7 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoTaskCell", for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: K.TableView.taskCellId, for: indexPath)
         
         if let task = tasks?[indexPath.row] {
             reusableCell.textLabel?.text = task.name
@@ -81,7 +81,7 @@ extension TasksViewController: UISearchResultsUpdating {
         if !text.isEmpty {
             loadTasksFromRealm()
             
-            tasks = tasks?.filter("name CONTAINS[cd] %@", text).sorted(byKeyPath: "creationDate")
+            tasks = tasks?.filter(K.RealmDb.searchByNamePredicate, text).sorted(byKeyPath: K.RealmDb.Task.creationDate)
         } else {
             loadTasksFromRealm()
         }
@@ -142,7 +142,7 @@ private extension TasksViewController {
 
 private extension TasksViewController {
     func loadTasksFromRealm() {
-        tasks = selectedCategory?.tasks.sorted(byKeyPath: "creationDate")
+        tasks = selectedCategory?.tasks.sorted(byKeyPath: K.RealmDb.Task.creationDate)
     }
 }
 

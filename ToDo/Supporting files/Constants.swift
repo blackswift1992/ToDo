@@ -1,11 +1,3 @@
-//
-//  Constants.swift
-//  ToDo
-//
-//  Created by Олексій Мороз on 18.11.2022.
-//  Copyright © 2022 Oleksii Moroz. All rights reserved.
-//
-
 import Foundation
 
 struct K {
@@ -23,6 +15,7 @@ struct K {
         
         struct Category {
             static let name = "name"
+            static let tasks = "tasks"
         }
         
         struct Task {

@@ -1,7 +1,7 @@
 import UIKit
 import RealmSwift
 
-class ToDoListViewController: UITableViewController {
+class TasksViewController: UITableViewController {
     private let searchController = UISearchController()
     
     private let realm = try! Realm()
@@ -11,6 +11,7 @@ class ToDoListViewController: UITableViewController {
     private var selectedCategory: ToDoCategory? {
         didSet {
             loadItemsFromRealm()
+            tableView.reloadData()
         }
     }
     
@@ -65,7 +66,7 @@ class ToDoListViewController: UITableViewController {
 //MARK: - Public methods
 
 
-extension ToDoListViewController {
+extension TasksViewController {
     func setSelectedCategory(_ category: ToDoCategory?) {
         selectedCategory = category
     }
@@ -75,7 +76,7 @@ extension ToDoListViewController {
 //MARK: - UISearchResultsUpdating
 
 
-extension ToDoListViewController: UISearchResultsUpdating {
+extension TasksViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         
@@ -88,21 +89,6 @@ extension ToDoListViewController: UISearchResultsUpdating {
         }
         
         tableView.reloadData()
-        
-        
-
-//        if !text.isEmpty {
-//            let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
-//
-//            let predicate = NSPredicate(format: "taskName CONTAINS[cd] %@", text)
-//
-//            request.sortDescriptors = [NSSortDescriptor(key: "taskName", ascending: true)]
-//
-//            loadToDoItemsFromDb(with: request, additionalPredicate: predicate)
-//        } else {
-//            loadToDoItemsFromDb()
-//        }
-//        tableView.reloadData()
     }
 }
 
@@ -110,7 +96,7 @@ extension ToDoListViewController: UISearchResultsUpdating {
 //MARK: - UISearchBarDelegate
 
 
-extension ToDoListViewController: UISearchBarDelegate {
+extension TasksViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     }
 }
@@ -119,7 +105,7 @@ extension ToDoListViewController: UISearchBarDelegate {
 //MARK: - @IBActions
 
 
-private extension ToDoListViewController {
+private extension TasksViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField: UITextField?
         
@@ -133,7 +119,6 @@ private extension ToDoListViewController {
         alert.addAction(UIAlertAction(title: "Add task", style: .default) { action in
             if let taskName = textField?.text,
                let safeSelectedCategory = self.selectedCategory {
-                
                 do {
                     try self.realm.write {
                         let newToDoItem = ToDoItem()
@@ -157,7 +142,7 @@ private extension ToDoListViewController {
 //MARK: - Private methods
 
 
-private extension ToDoListViewController {
+private extension TasksViewController {
     func loadItemsFromRealm() {
         items = selectedCategory?.items.sorted(byKeyPath: "creationDate")
     }
@@ -167,5 +152,5 @@ private extension ToDoListViewController {
 //MARK: - Set up methods
 
 
-private extension ToDoListViewController {}
+private extension TasksViewController {}
 

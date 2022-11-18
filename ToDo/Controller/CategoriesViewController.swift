@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CategoryTableViewController: UITableViewController {
+class CategoriesViewController: UITableViewController {
     private let searchController = UISearchController()
     
     private let realm = try! Realm()
@@ -25,6 +25,7 @@ class CategoryTableViewController: UITableViewController {
         navigationItem.searchController = searchController
         
         loadCategoriesFromRealm()
+        tableView.reloadData()
         
         //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
@@ -49,12 +50,11 @@ class CategoryTableViewController: UITableViewController {
             performSegue(withIdentifier: "goToToDoItems", sender: self)
         }
 
-        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? ToDoListViewController,
+        if let destinationVC = segue.destination as? TasksViewController,
            let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.setSelectedCategory(categories?[indexPath.row])
         }
@@ -65,7 +65,7 @@ class CategoryTableViewController: UITableViewController {
 //MARK: - Public methods
 
 
-extension CategoryTableViewController {
+extension CategoriesViewController {
     
 }
 
@@ -73,7 +73,7 @@ extension CategoryTableViewController {
 //MARK: - UISearchResultsUpdating
 
 
-extension CategoryTableViewController: UISearchResultsUpdating {
+extension CategoriesViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
 //        guard let text = searchController.searchBar.text else { return }
         
@@ -97,7 +97,7 @@ extension CategoryTableViewController: UISearchResultsUpdating {
 //MARK: - UISearchBarDelegate
 
 
-extension CategoryTableViewController: UISearchBarDelegate {
+extension CategoriesViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     }
 }
@@ -106,7 +106,7 @@ extension CategoryTableViewController: UISearchBarDelegate {
 //MARK: - @IBActions
 
 
-private extension CategoryTableViewController {
+private extension CategoriesViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField: UITextField?
         
@@ -117,14 +117,14 @@ private extension CategoryTableViewController {
             textField = alertTextField
         }
         
-        alert.addAction(UIAlertAction(title: "Add category", style: .default) { [weak self] action in
+        alert.addAction(UIAlertAction(title: "Add category", style: .default) { _ in
             guard let name = textField?.text else { return }
             
             let newCategory = ToDoCategory()
             newCategory.name = name
 
-            self?.saveCategoryToRealm(newCategory)
-            self?.tableView.reloadData()
+            self.saveCategoryToRealm(newCategory)
+            self.tableView.reloadData()
         })
         
         present(alert, animated: true)
@@ -135,13 +135,12 @@ private extension CategoryTableViewController {
 //MARK: - Private methods
 
 
-private extension CategoryTableViewController {
+private extension CategoriesViewController {
     func loadCategoriesFromRealm() {
         categories = realm.objects(ToDoCategory.self)
     }
     
     func saveCategoryToRealm(_ category: ToDoCategory) {
-        
         do {
             try realm.write {
                 realm.add(category)
@@ -156,7 +155,7 @@ private extension CategoryTableViewController {
 //MARK: - Set up methods
 
 
-private extension CategoryTableViewController {
+private extension CategoriesViewController {
     
 }
 

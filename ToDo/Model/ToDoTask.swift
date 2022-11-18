@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class ToDoItem: Object {
+class ToDoTask: Object {
     @objc dynamic var taskName: String = ""
     @objc dynamic var isDone: Bool = false
     @objc dynamic var creationDate: Date?

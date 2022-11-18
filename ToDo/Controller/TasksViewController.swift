@@ -6,11 +6,11 @@ class TasksViewController: UITableViewController {
     
     private let realm = try! Realm()
 
-    private var items: Results<ToDoItem>?
+    private var tasks: Results<ToDoTask>?
     
     private var selectedCategory: ToDoCategory? {
         didSet {
-            loadItemsFromRealm()
+            loadTasksFromRealm()
             tableView.reloadData()
         }
     }
@@ -23,21 +23,31 @@ class TasksViewController: UITableViewController {
         searchController.searchBar.tintColor = .white
         navigationItem.searchController = searchController
 
-                print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        print(Date().timeIntervalSince1970.description)
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items?.count ?? 1
+        return tasks?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        if let item = items?[indexPath.row] {
-            reusableCell.textLabel?.text = item.taskName
-            reusableCell.accessoryType = item.isDone ? .checkmark : .none
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if let task = tasks?[indexPath.row] {
+            reusableCell.textLabel?.text = task.taskName
+            reusableCell.accessoryType = task.isDone ? .checkmark : .none
         } else {
             reusableCell.textLabel?.text = "No Tasks added yet"
         }
@@ -46,10 +56,10 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let item = items?[indexPath.row] {
+        if let task = tasks?[indexPath.row] {
             do {
                 try self.realm.write {
-                    item.isDone = !item.isDone
+                    task.isDone = !task.isDone
                 }
             } catch {
                 print("Error with isDone property changing, \(error)")
@@ -81,11 +91,23 @@ extension TasksViewController: UISearchResultsUpdating {
         guard let text = searchController.searchBar.text else { return }
         
         if !text.isEmpty {
-            loadItemsFromRealm()
+            loadTasksFromRealm()
             
-            items = items?.filter("taskName CONTAINS[cd] %@", text).sorted(byKeyPath: "creationDate")
+            tasks = tasks?.filter("taskName CONTAINS[cd] %@", text).sorted(byKeyPath: "creationDate")
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         } else {
-            loadItemsFromRealm()
+            loadTasksFromRealm()
         }
         
         tableView.reloadData()
@@ -121,10 +143,10 @@ private extension TasksViewController {
                let safeSelectedCategory = self.selectedCategory {
                 do {
                     try self.realm.write {
-                        let newToDoItem = ToDoItem()
-                        newToDoItem.taskName = taskName
-                        newToDoItem.creationDate = Date()
-                        safeSelectedCategory.items.append(newToDoItem)
+                        let newTask = ToDoTask()
+                        newTask.taskName = taskName
+                        newTask.creationDate = Date()
+                        safeSelectedCategory.items.append(newTask)
                     }
                 } catch {
                     print("Error with item saving, \(error)")
@@ -143,8 +165,8 @@ private extension TasksViewController {
 
 
 private extension TasksViewController {
-    func loadItemsFromRealm() {
-        items = selectedCategory?.items.sorted(byKeyPath: "creationDate")
+    func loadTasksFromRealm() {
+        tasks = selectedCategory?.items.sorted(byKeyPath: "creationDate")
     }
 }
 

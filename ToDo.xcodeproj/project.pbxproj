@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		497FA3C7291EAEAE00E7FA6F /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */; };
 		49C13ED9292465DE00501AF2 /* ToDoCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C13ED8292465DE00501AF2 /* ToDoCategory.swift */; };
-		49C13EDB292465F300501AF2 /* ToDoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C13EDA292465F300501AF2 /* ToDoItem.swift */; };
+		49C13EDB292465F300501AF2 /* ToDoTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C13EDA292465F300501AF2 /* ToDoTask.swift */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* TasksViewController.swift */; };
 		EB2BE501239524DB00FB933B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE4FF239524DB00FB933B /* Main.storyboard */; };
@@ -21,7 +21,7 @@
 /* Begin PBXFileReference section */
 		497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		49C13ED8292465DE00501AF2 /* ToDoCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCategory.swift; sourceTree = "<group>"; };
-		49C13EDA292465F300501AF2 /* ToDoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItem.swift; sourceTree = "<group>"; };
+		49C13EDA292465F300501AF2 /* ToDoTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTask.swift; sourceTree = "<group>"; };
 		74FB17BD7C05F2764E316E08 /* Pods-ToDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo.release.xcconfig"; path = "Target Support Files/Pods-ToDo/Pods-ToDo.release.xcconfig"; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 			isa = PBXGroup;
 			children = (
 				49C13ED8292465DE00501AF2 /* ToDoCategory.swift */,
-				49C13EDA292465F300501AF2 /* ToDoItem.swift */,
+				49C13EDA292465F300501AF2 /* ToDoTask.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -245,7 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB2BE4FE239524DB00FB933B /* TasksViewController.swift in Sources */,
-				49C13EDB292465F300501AF2 /* ToDoItem.swift in Sources */,
+				49C13EDB292465F300501AF2 /* ToDoTask.swift in Sources */,
 				49C13ED9292465DE00501AF2 /* ToDoCategory.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 				497FA3C7291EAEAE00E7FA6F /* CategoriesViewController.swift in Sources */,

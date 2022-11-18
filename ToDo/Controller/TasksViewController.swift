@@ -31,19 +31,7 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoTaskCell", for: indexPath)
         
         if let task = tasks?[indexPath.row] {
             reusableCell.textLabel?.text = task.taskName

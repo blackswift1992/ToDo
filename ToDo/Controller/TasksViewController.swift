@@ -34,7 +34,7 @@ class TasksViewController: UITableViewController {
         let reusableCell = tableView.dequeueReusableCell(withIdentifier: "ToDoTaskCell", for: indexPath)
         
         if let task = tasks?[indexPath.row] {
-            reusableCell.textLabel?.text = task.taskName
+            reusableCell.textLabel?.text = task.name
             reusableCell.accessoryType = task.isDone ? .checkmark : .none
         } else {
             reusableCell.textLabel?.text = "No Tasks added yet"
@@ -81,19 +81,7 @@ extension TasksViewController: UISearchResultsUpdating {
         if !text.isEmpty {
             loadTasksFromRealm()
             
-            tasks = tasks?.filter("taskName CONTAINS[cd] %@", text).sorted(byKeyPath: "creationDate")
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            tasks = tasks?.filter("name CONTAINS[cd] %@", text).sorted(byKeyPath: "creationDate")
         } else {
             loadTasksFromRealm()
         }
@@ -132,7 +120,7 @@ private extension TasksViewController {
                 do {
                     try self.realm.write {
                         let newTask = ToDoTask()
-                        newTask.taskName = taskName
+                        newTask.name = taskName
                         newTask.creationDate = Date()
                         safeSelectedCategory.items.append(newTask)
                     }

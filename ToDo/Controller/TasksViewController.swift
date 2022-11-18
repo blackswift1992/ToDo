@@ -122,7 +122,7 @@ private extension TasksViewController {
                         let newTask = ToDoTask()
                         newTask.name = taskName
                         newTask.creationDate = Date()
-                        safeSelectedCategory.items.append(newTask)
+                        safeSelectedCategory.tasks.append(newTask)
                     }
                 } catch {
                     print("Error with item saving, \(error)")
@@ -142,7 +142,7 @@ private extension TasksViewController {
 
 private extension TasksViewController {
     func loadTasksFromRealm() {
-        tasks = selectedCategory?.items.sorted(byKeyPath: "creationDate")
+        tasks = selectedCategory?.tasks.sorted(byKeyPath: "creationDate")
     }
 }
 

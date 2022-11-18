@@ -17,13 +17,7 @@ class TasksViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.tintColor = .white
-        navigationItem.searchController = searchController
-
-//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        setUpSearchController()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,8 +89,7 @@ extension TasksViewController: UISearchResultsUpdating {
 
 
 extension TasksViewController: UISearchBarDelegate {
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
 
 
@@ -150,5 +143,12 @@ private extension TasksViewController {
 //MARK: - Set up methods
 
 
-private extension TasksViewController {}
+private extension TasksViewController {
+    func setUpSearchController() {
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.tintColor = .white
+        navigationItem.searchController = searchController
+    }
+}
 

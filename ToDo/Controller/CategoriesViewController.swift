@@ -1,11 +1,3 @@
-//
-//  CategoryTableViewController.swift
-//  ToDo
-//
-//  Created by Олексій Мороз on 11.11.2022.
-//  Copyright © 2022 Oleksii Moroz. All rights reserved.
-//
-
 import UIKit
 import RealmSwift
 
@@ -14,20 +6,14 @@ class CategoriesViewController: UITableViewController {
     
     private let realm = try! Realm()
     
-    var categories: Results<ToDoCategory>?
+    private var categories: Results<ToDoCategory>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.tintColor = .white
-        navigationItem.searchController = searchController
-        
+        setUpSearchController()
         loadCategoriesFromRealm()
         tableView.reloadData()
-        
-        //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -65,9 +51,7 @@ class CategoriesViewController: UITableViewController {
 //MARK: - Public methods
 
 
-extension CategoriesViewController {
-    
-}
+extension CategoriesViewController {}
 
 
 //MARK: - UISearchResultsUpdating
@@ -94,8 +78,7 @@ extension CategoriesViewController: UISearchResultsUpdating {
 
 
 extension CategoriesViewController: UISearchBarDelegate {
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
 
 
@@ -152,6 +135,11 @@ private extension CategoriesViewController {
 
 
 private extension CategoriesViewController {
-    
+    func setUpSearchController() {
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.tintColor = .white
+        navigationItem.searchController = searchController
+    }
 }
 

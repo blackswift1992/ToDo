@@ -110,8 +110,8 @@ extension CategoriesViewController: SwipeTableViewCellDelegate {
             // handle action by updating model with deletion
             print("Category was deleted")
             
-//            guard let selectedCategory = self?.categories?[indexPath.row] else { return }
-//            self?.deleteCategoryFromRealm(selectedCategory)
+            guard let selectedCategory = self?.categories?[indexPath.row] else { return }
+            self?.deleteCategoryFromRealm(selectedCategory)
         }
 
         deleteAction.image = UIImage(named: "delete-icon")
@@ -176,15 +176,15 @@ private extension CategoriesViewController {
         }
     }
     
-//    func deleteCategoryFromRealm(_ category: ToDoCategory) {
-//        do {
-//            try realm.write {
-//                realm.delete(category)
-//            }
-//        } catch {
-//            print("Error with category saving, \(error)")
-//        }
-//    }
+    func deleteCategoryFromRealm(_ category: ToDoCategory) {
+        do {
+            try realm.write {
+                realm.delete(category)
+            }
+        } catch {
+            print("Error with category saving, \(error)")
+        }
+    }
 }
 
 

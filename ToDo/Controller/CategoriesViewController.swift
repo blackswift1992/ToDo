@@ -1,5 +1,6 @@
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class CategoriesViewController: UITableViewController {
     private let searchController = UISearchController()
@@ -11,6 +12,7 @@ class CategoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.rowHeight = 80.0
         setUpSearchController()
         loadCategoriesFromRealm()
         tableView.reloadData()
@@ -24,8 +26,11 @@ class CategoriesViewController: UITableViewController {
         return categories?.count ?? 1
     }
     
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: K.TableView.categoryCellId, for: indexPath)
+        let reusableCell = tableView.dequeueReusableCell(withIdentifier: K.TableView.categoryCellId, for: indexPath) as! SwipeTableViewCell
+        
+        reusableCell.delegate = self
         
         let category = categories?[indexPath.row]
         
@@ -94,6 +99,34 @@ extension CategoriesViewController: UISearchBarDelegate {
 }
 
 
+//MARK: - SwipeTableViewCellDelegate
+
+
+extension CategoriesViewController: SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [weak self] action, indexPath in
+            // handle action by updating model with deletion
+            print("Category was deleted")
+            
+//            guard let selectedCategory = self?.categories?[indexPath.row] else { return }
+//            self?.deleteCategoryFromRealm(selectedCategory)
+        }
+
+        deleteAction.image = UIImage(named: "delete-icon")
+
+        return [deleteAction]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        return options
+    }
+}
+
+
 //MARK: - @IBActions
 
 
@@ -142,6 +175,16 @@ private extension CategoriesViewController {
             print("Error with category saving, \(error)")
         }
     }
+    
+//    func deleteCategoryFromRealm(_ category: ToDoCategory) {
+//        do {
+//            try realm.write {
+//                realm.delete(category)
+//            }
+//        } catch {
+//            print("Error with category saving, \(error)")
+//        }
+//    }
 }
 
 

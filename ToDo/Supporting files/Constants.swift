@@ -6,8 +6,7 @@ struct K {
     }
     
     struct TableView {
-        static let categoryCellId = "ToDoCategoryCell"
-        static let taskCellId = "ToDoTaskCell"
+        static let cellId = "Cell"
     }
     
     struct RealmDb {

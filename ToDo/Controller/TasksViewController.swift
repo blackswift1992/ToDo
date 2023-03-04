@@ -1,7 +1,7 @@
 import UIKit
 import RealmSwift
 
-class TasksViewController: UITableViewController {
+class TasksViewController: SwipeTableViewController {
     private let searchController = UISearchController()
     
     private let realm = try! Realm()
@@ -29,7 +29,7 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: K.TableView.taskCellId, for: indexPath)
+        let reusableCell = super.tableView(tableView, cellForRowAt: indexPath)
         
         if let task = tasks?[indexPath.row] {
             reusableCell.textLabel?.text = task.name
@@ -59,6 +59,16 @@ class TasksViewController: UITableViewController {
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    //MARK: -- SwipeCellUpdateMethod
+    
+    
+    override func updateModel(at indexPath: IndexPath) {
+        guard let selectedTask = tasks?[indexPath.row] else { return }
+        
+        deleteTaskFromRealm(selectedTask)
     }
 }
 
@@ -146,6 +156,16 @@ private extension TasksViewController {
 private extension TasksViewController {
     func loadTasksFromRealm() {
         tasks = selectedCategory?.tasks.sorted(byKeyPath: K.RealmDb.Task.creationDate)
+    }
+    
+    func deleteTaskFromRealm(_ task: ToDoTask) {
+        do {
+            try realm.write {
+                realm.delete(task)
+            }
+        } catch {
+            print("Error with category saving, \(error)")
+        }
     }
 }
 

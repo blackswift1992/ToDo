@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		490A4C2029B235DF007CA57D /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490A4C1F29B235DF007CA57D /* SwipeTableViewController.swift */; };
 		4946F0032927F4C000024112 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946F0022927F4C000024112 /* Constants.swift */; };
 		497FA3C7291EAEAE00E7FA6F /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */; };
 		49C13ED9292465DE00501AF2 /* ToDoCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C13ED8292465DE00501AF2 /* ToDoCategory.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		490A4C1F29B235DF007CA57D /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		4946F0022927F4C000024112 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		49C13ED8292465DE00501AF2 /* ToDoCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCategory.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 		4901DA3E29196280002A5C24 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				490A4C1F29B235DF007CA57D /* SwipeTableViewController.swift */,
 				497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */,
 				EB2BE4FD239524DB00FB933B /* TasksViewController.swift */,
 			);
@@ -250,6 +253,7 @@
 				EB2BE4FE239524DB00FB933B /* TasksViewController.swift in Sources */,
 				49C13EDB292465F300501AF2 /* ToDoTask.swift in Sources */,
 				49C13ED9292465DE00501AF2 /* ToDoCategory.swift in Sources */,
+				490A4C2029B235DF007CA57D /* SwipeTableViewController.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 				497FA3C7291EAEAE00E7FA6F /* CategoriesViewController.swift in Sources */,
 				4946F0032927F4C000024112 /* Constants.swift in Sources */,
@@ -399,20 +403,18 @@
 			baseConfigurationReference = FBF94AC21DAD89B64F00AC81 /* Pods-ToDo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 47LBXLJNSU;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PBS6J5S79S;
 				INFOPLIST_FILE = ToDo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ua.org.zoromjavadev.Clima;
+				PRODUCT_BUNDLE_IDENTIFIER = ua.org.zoromjavadev.todo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Moroz dev cert";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -423,20 +425,18 @@
 			baseConfigurationReference = 74FB17BD7C05F2764E316E08 /* Pods-ToDo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 47LBXLJNSU;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PBS6J5S79S;
 				INFOPLIST_FILE = ToDo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ua.org.zoromjavadev.Clima;
+				PRODUCT_BUNDLE_IDENTIFIER = ua.org.zoromjavadev.todo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Moroz dev cert";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

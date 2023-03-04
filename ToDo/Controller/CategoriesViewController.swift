@@ -1,8 +1,7 @@
 import UIKit
 import RealmSwift
-import SwipeCellKit
 
-class CategoriesViewController: UITableViewController {
+class CategoriesViewController: SwipeTableViewController {
     private let searchController = UISearchController()
     
     private let realm = try! Realm()
@@ -12,10 +11,8 @@ class CategoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.rowHeight = 80.0
         setUpSearchController()
         loadCategoriesFromRealm()
-        tableView.reloadData()
     }
     
     
@@ -28,12 +25,9 @@ class CategoriesViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: K.TableView.categoryCellId, for: indexPath) as! SwipeTableViewCell
-        
-        reusableCell.delegate = self
+        let reusableCell = super.tableView(tableView, cellForRowAt: indexPath)
         
         let category = categories?[indexPath.row]
-        
         reusableCell.textLabel?.text = category?.name ?? "No Categories added yet"
         
         return reusableCell
@@ -44,12 +38,21 @@ class CategoriesViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         if categories != nil {
             performSegue(withIdentifier: K.Segue.goToTasks, sender: self)
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    //MARK: -- SwipeCellUpdateMethod
+    
+    
+    override func updateModel(at indexPath: IndexPath) {
+        guard let selectedCategory = categories?[indexPath.row] else { return }
+        
+        deleteCategoryFromRealm(selectedCategory)
     }
     
     
@@ -86,7 +89,7 @@ extension CategoriesViewController: UISearchResultsUpdating {
             loadCategoriesFromRealm()
         }
         
-        tableView.reloadData()
+//        tableView.reloadData()   ??????може все тики треба для першого іфа
     }
 }
 
@@ -98,33 +101,6 @@ extension CategoriesViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
 
-
-//MARK: - SwipeTableViewCellDelegate
-
-
-extension CategoriesViewController: SwipeTableViewCellDelegate {
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else { return nil }
-
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [weak self] action, indexPath in
-            // handle action by updating model with deletion
-            print("Category was deleted")
-            
-            guard let selectedCategory = self?.categories?[indexPath.row] else { return }
-            self?.deleteCategoryFromRealm(selectedCategory)
-        }
-
-        deleteAction.image = UIImage(named: "delete-icon")
-
-        return [deleteAction]
-    }
-    
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-        var options = SwipeOptions()
-        options.expansionStyle = .destructive
-        return options
-    }
-}
 
 
 //MARK: - @IBActions
@@ -164,7 +140,9 @@ private extension CategoriesViewController {
 private extension CategoriesViewController {
     func loadCategoriesFromRealm() {
         categories = realm.objects(ToDoCategory.self)
+        tableView.reloadData()
     }
+    
     
     func saveCategoryToRealm(_ category: ToDoCategory) {
         do {
@@ -175,6 +153,7 @@ private extension CategoriesViewController {
             print("Error with category saving, \(error)")
         }
     }
+    
     
     func deleteCategoryFromRealm(_ category: ToDoCategory) {
         do {

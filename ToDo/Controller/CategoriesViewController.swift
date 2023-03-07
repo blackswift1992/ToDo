@@ -1,5 +1,6 @@
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class CategoriesViewController: SwipeTableViewController {
     private let searchController = UISearchController()
@@ -11,8 +12,19 @@ class CategoriesViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.separatorStyle = .none
         setUpSearchController()
         loadCategoriesFromRealm()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = GradientColor(.topToBottom, frame: view.frame, colors: [.flatMintDark(), .flatPurpleDark(), .flatBlackDark()])
+        
+        if let navigationBar = navigationController?.navigationBar {
+                navigationBar.backgroundColor = .flatMintDark()
+        }
     }
     
     
@@ -29,7 +41,14 @@ class CategoriesViewController: SwipeTableViewController {
         
         let category = categories?[indexPath.row]
         reusableCell.textLabel?.text = category?.name ?? "No Categories added yet"
+        reusableCell.textLabel?.font = UIFont(name: "Pacifico", size: 30.0)
+        reusableCell.backgroundColor = UIColor(hexString: category?.backgroundColorHexValue ?? "#000000")
         
+        if let color = UIColor(hexString: category?.backgroundColorHexValue ?? "#000000") {
+            reusableCell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+
+        }
+
         return reusableCell
     }
     
@@ -49,10 +68,35 @@ class CategoriesViewController: SwipeTableViewController {
     //MARK: -- SwipeCellUpdateMethod
     
     
-    override func updateModel(at indexPath: IndexPath) {
+    override func deleteCell(at indexPath: IndexPath) {
         guard let selectedCategory = categories?[indexPath.row] else { return }
         
         deleteCategoryFromRealm(selectedCategory)
+    }
+    
+    
+    override func editCell(at indexPath: IndexPath) {
+        guard let selectedCategory = categories?[indexPath.row] else { return }
+        var textField: UITextField?
+        
+        let alert = UIAlertController(title: "Type new name", message: "", preferredStyle: .alert)
+        
+        alert.addTextField() { alertTextField in
+            alertTextField.text = "\(selectedCategory.name)"
+            alertTextField.autocapitalizationType = .sentences
+            textField = alertTextField
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Rename", style: .default) { [weak self] action in
+            if let newName = textField?.text {
+                self?.editCategoryInRealm(selectedCategory, newName: newName)
+                self?.tableView.reloadData()
+            }
+        })
+        
+        present(alert, animated: true)
     }
     
     
@@ -97,7 +141,7 @@ extension CategoriesViewController: UISearchResultsUpdating {
 //MARK: - UISearchBarDelegate
 
 
-extension CategoriesViewController: UISearchBarDelegate {
+extension CategoriesViewController: UISearchBarDelegate  {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
 
@@ -114,6 +158,7 @@ private extension CategoriesViewController {
         
         alert.addTextField() { alertTextField in
             alertTextField.placeholder = "Type category name"
+            alertTextField.autocapitalizationType = .sentences
             textField = alertTextField
         }
         
@@ -124,7 +169,8 @@ private extension CategoriesViewController {
             
             let newCategory = ToDoCategory()
             newCategory.name = name
-
+            newCategory.backgroundColorHexValue = UIColor.randomFlat().hexValue()
+            
             self.saveCategoryToRealm(newCategory)
             self.tableView.reloadData()
         })
@@ -162,6 +208,16 @@ private extension CategoriesViewController {
             }
         } catch {
             print("Error with category saving, \(error)")
+        }
+    }
+    
+    func editCategoryInRealm(_ category: ToDoCategory, newName: String) {
+        do {
+            try realm.write {
+                category.name = newName
+            }
+        } catch {
+            print("Error with task editing, \(error)")
         }
     }
 }

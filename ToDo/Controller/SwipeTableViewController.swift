@@ -23,13 +23,18 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil }
         
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [weak self] action, indexPath in
-            self?.updateModel(at: indexPath)
+        let editAction = SwipeAction(style: .default, title: "Edit") { [weak self] action, indexPath in
+            self?.editCell(at: indexPath)
         }
+        editAction.backgroundColor = .flatYellowDark()
+        editAction.image = UIImage(named: "edit-icon")
         
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { [weak self] action, indexPath in
+            self?.deleteCell(at: indexPath)
+        }
         deleteAction.image = UIImage(named: "delete-icon")
         
-        return [deleteAction]
+        return [deleteAction, editAction]
     }
     
     
@@ -40,7 +45,12 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     }
     
     
-    func updateModel(at indexPath: IndexPath) {
+    func deleteCell(at indexPath: IndexPath) {
+        //Update here your data model
+        //You can override this method in a subclass and put here realization of data model changing
+    }
+    
+    func editCell(at indexPath: IndexPath) {
         //Update here your data model
         //You can override this method in a subclass and put here realization of data model changing
     }

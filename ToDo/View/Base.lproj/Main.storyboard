@@ -33,7 +33,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="Frj-CP-CvX">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="UfN-gK-mmX">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="YwJ-Z5-14v" id="JT2-zq-oCM"/>
                             </connections>
@@ -72,7 +71,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Tasks" id="Suz-st-JDv">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ezq-Aa-YMd">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="N3E-0r-4BI" id="JPJ-ES-Bpc"/>
                             </connections>
@@ -88,13 +86,18 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1fU-Lc-ucg" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="c28-T1-tPp">
-                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="c28-T1-tPp">
+                        <rect key="frame" x="0.0" y="47" width="390" height="105.66666666666666"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                        <color key="backgroundColor" red="0.59999999999999998" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
+                        <navigationBarAppearance key="scrollEdgeAppearance">
+                            <textAttributes key="largeTitleTextAttributes">
+                                <fontDescription key="fontDescription" name="Nunito-Bold" family="Nunito" pointSize="45"/>
+                            </textAttributes>
+                        </navigationBarAppearance>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -110,9 +113,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

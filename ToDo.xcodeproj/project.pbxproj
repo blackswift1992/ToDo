@@ -10,8 +10,12 @@
 		490A4C2029B235DF007CA57D /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490A4C1F29B235DF007CA57D /* SwipeTableViewController.swift */; };
 		4946F0032927F4C000024112 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4946F0022927F4C000024112 /* Constants.swift */; };
 		497FA3C7291EAEAE00E7FA6F /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */; };
+		4990241C29B648D900BF31DF /* Caveat-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4990241B29B648D900BF31DF /* Caveat-VariableFont_wght.ttf */; };
 		49C13ED9292465DE00501AF2 /* ToDoCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C13ED8292465DE00501AF2 /* ToDoCategory.swift */; };
 		49C13EDB292465F300501AF2 /* ToDoTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C13EDA292465F300501AF2 /* ToDoTask.swift */; };
+		49F07FCD29B6636400258E98 /* Pacifico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F07FCC29B6636400258E98 /* Pacifico-Regular.ttf */; };
+		49F07FCF29B663FD00258E98 /* Nunito-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F07FCE29B663FD00258E98 /* Nunito-VariableFont_wght.ttf */; };
+		49F07FD129B664F400258E98 /* Nunito-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F07FD029B664F400258E98 /* Nunito-Italic-VariableFont_wght.ttf */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* TasksViewController.swift */; };
 		EB2BE501239524DB00FB933B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE4FF239524DB00FB933B /* Main.storyboard */; };
@@ -24,8 +28,12 @@
 		490A4C1F29B235DF007CA57D /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		4946F0022927F4C000024112 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		497FA3C6291EAEAE00E7FA6F /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
+		4990241B29B648D900BF31DF /* Caveat-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Caveat-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		49C13ED8292465DE00501AF2 /* ToDoCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCategory.swift; sourceTree = "<group>"; };
 		49C13EDA292465F300501AF2 /* ToDoTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTask.swift; sourceTree = "<group>"; };
+		49F07FCC29B6636400258E98 /* Pacifico-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pacifico-Regular.ttf"; sourceTree = "<group>"; };
+		49F07FCE29B663FD00258E98 /* Nunito-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		49F07FD029B664F400258E98 /* Nunito-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		74FB17BD7C05F2764E316E08 /* Pods-ToDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo.release.xcconfig"; path = "Target Support Files/Pods-ToDo/Pods-ToDo.release.xcconfig"; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +95,17 @@
 			path = "Supporting files";
 			sourceTree = "<group>";
 		};
+		49F54D3D29B5711C00767C68 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				49F07FD029B664F400258E98 /* Nunito-Italic-VariableFont_wght.ttf */,
+				49F07FCE29B663FD00258E98 /* Nunito-VariableFont_wght.ttf */,
+				49F07FCC29B6636400258E98 /* Pacifico-Regular.ttf */,
+				4990241B29B648D900BF31DF /* Caveat-VariableFont_wght.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		6CD376DC9BBC38B8FB127124 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +149,7 @@
 				4901DA3D29196276002A5C24 /* View */,
 				4901DA3E29196280002A5C24 /* Controller */,
 				4901DA3F2919640B002A5C24 /* Supporting files */,
+				49F54D3D29B5711C00767C68 /* Fonts */,
 				EB2BE507239524DC00FB933B /* Info.plist */,
 			);
 			path = ToDo;
@@ -198,6 +218,10 @@
 				EB2BE506239524DC00FB933B /* LaunchScreen.storyboard in Resources */,
 				EB2BE503239524DC00FB933B /* Assets.xcassets in Resources */,
 				EB2BE501239524DB00FB933B /* Main.storyboard in Resources */,
+				4990241C29B648D900BF31DF /* Caveat-VariableFont_wght.ttf in Resources */,
+				49F07FCF29B663FD00258E98 /* Nunito-VariableFont_wght.ttf in Resources */,
+				49F07FD129B664F400258E98 /* Nunito-Italic-VariableFont_wght.ttf in Resources */,
+				49F07FCD29B6636400258E98 /* Pacifico-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -69,7 +69,7 @@
                             <outlet property="delegate" destination="N3E-0r-4BI" id="uBc-Hp-GDw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tasks" id="Suz-st-JDv">
+                    <navigationItem key="navigationItem" title="Tasks" largeTitleDisplayMode="always" id="Suz-st-JDv">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ezq-Aa-YMd">
                             <connections>
                                 <action selector="addButtonPressed:" destination="N3E-0r-4BI" id="JPJ-ES-Bpc"/>

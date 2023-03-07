@@ -88,6 +88,7 @@
 		4901DA3F2919640B002A5C24 /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
+				49F54D3D29B5711C00767C68 /* Fonts */,
 				EB2BE502239524DC00FB933B /* Assets.xcassets */,
 				EB2BE504239524DC00FB933B /* LaunchScreen.storyboard */,
 				4946F0022927F4C000024112 /* Constants.swift */,
@@ -149,7 +150,6 @@
 				4901DA3D29196276002A5C24 /* View */,
 				4901DA3E29196280002A5C24 /* Controller */,
 				4901DA3F2919640B002A5C24 /* Supporting files */,
-				49F54D3D29B5711C00767C68 /* Fonts */,
 				EB2BE507239524DC00FB933B /* Info.plist */,
 			);
 			path = ToDo;

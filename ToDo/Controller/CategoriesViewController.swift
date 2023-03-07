@@ -6,17 +6,13 @@ class CategoriesViewController: SwipeTableViewController {
     private let searchController = UISearchController()
     
     private let realm = try! Realm()
-    
     private var categories: Results<ToDoCategory>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.separatorStyle = .none
         setUpSearchController()
         loadCategoriesFromRealm()
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,21 +28,19 @@ class CategoriesViewController: SwipeTableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories?.count ?? 1
+        return categories?.count ?? 0
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reusableCell = super.tableView(tableView, cellForRowAt: indexPath)
         
         let category = categories?[indexPath.row]
-        reusableCell.textLabel?.text = category?.name ?? "No Categories added yet"
+        reusableCell.textLabel?.text = category?.name
         reusableCell.textLabel?.font = UIFont(name: "Pacifico", size: 30.0)
         reusableCell.backgroundColor = UIColor(hexString: category?.backgroundColorHexValue ?? "#000000")
         
         if let color = UIColor(hexString: category?.backgroundColorHexValue ?? "#000000") {
             reusableCell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
-
         }
 
         return reusableCell
@@ -73,7 +67,6 @@ class CategoriesViewController: SwipeTableViewController {
         
         deleteCategoryFromRealm(selectedCategory)
     }
-    
     
     override func editCell(at indexPath: IndexPath) {
         guard let selectedCategory = categories?[indexPath.row] else { return }
@@ -112,12 +105,6 @@ class CategoriesViewController: SwipeTableViewController {
 }
 
 
-//MARK: - Public methods
-
-
-extension CategoriesViewController {}
-
-
 //MARK: - UISearchResultsUpdating
 
 
@@ -144,7 +131,6 @@ extension CategoriesViewController: UISearchResultsUpdating {
 extension CategoriesViewController: UISearchBarDelegate  {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {}
 }
-
 
 
 //MARK: - @IBActions
@@ -189,7 +175,6 @@ private extension CategoriesViewController {
         tableView.reloadData()
     }
     
-    
     func saveCategoryToRealm(_ category: ToDoCategory) {
         do {
             try realm.write {
@@ -199,7 +184,6 @@ private extension CategoriesViewController {
             print("Error with category saving, \(error)")
         }
     }
-    
     
     func deleteCategoryFromRealm(_ category: ToDoCategory) {
         do {

@@ -6,7 +6,6 @@ class TasksViewController: SwipeTableViewController {
     private let searchController = UISearchController()
     
     private let realm = try! Realm()
-
     private var tasks: Results<ToDoTask>?
     
     private var selectedCategory: ToDoCategory? {
@@ -17,8 +16,6 @@ class TasksViewController: SwipeTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.separatorStyle = .none
         setUpSearchController()
     }
     
@@ -28,6 +25,7 @@ class TasksViewController: SwipeTableViewController {
         if let navigationBar = navigationController?.navigationBar,
            let category = selectedCategory,
            let categoryColor = UIColor(hexString: category.backgroundColorHexValue) {
+            
             navigationBar.backgroundColor = categoryColor
             title = category.name
             
@@ -40,24 +38,24 @@ class TasksViewController: SwipeTableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks?.count ?? 1
+        return tasks?.count ?? 0
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reusableCell = super.tableView(tableView, cellForRowAt: indexPath)
+        
         if let task = tasks?[indexPath.row],
            let category = selectedCategory,
            let categoryColor = UIColor(hexString:  category.backgroundColorHexValue) {
-            
             reusableCell.textLabel?.text = task.name
-            reusableCell.accessoryType = task.isDone ? .checkmark : .none
             reusableCell.textLabel?.font = UIFont(name: "Caveat", size: 30.0)
+            reusableCell.accessoryType = task.isDone ? .checkmark : .none
+            
             if let categoryDarkedColor = categoryColor.darken(byPercentage: 0.70 * CGFloat(indexPath.row) / CGFloat(tasks!.count + 1)) {
                 reusableCell.backgroundColor = categoryDarkedColor
                 reusableCell.textLabel?.textColor = UIColor.init(contrastingBlackOrWhiteColorOn: categoryDarkedColor, isFlat: true)
             }
-            
         }
         
         return reusableCell
@@ -69,17 +67,10 @@ class TasksViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let task = tasks?[indexPath.row] {
-            do {
-                try self.realm.write {
-                    task.isDone = !task.isDone
-                }
-            } catch {
-                print("Error with isDone property changing, \(error)")
-            }
-            
-            tableView.reloadData()
+            changeTaskSelectionMarkInRealm(task)
         }
         
+        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -89,7 +80,6 @@ class TasksViewController: SwipeTableViewController {
     
     override func deleteCell(at indexPath: IndexPath) {
         guard let selectedTask = tasks?[indexPath.row] else { return }
-        
         deleteTaskFromRealm(selectedTask)
     }
     
@@ -109,7 +99,7 @@ class TasksViewController: SwipeTableViewController {
         
         alert.addAction(UIAlertAction(title: "Rename", style: .default) { [weak self] action in
             if let newName = textField?.text {
-                self?.editTaskInRealm(selectedTask, newName: newName)
+                self?.changeTaskNameInRealm(selectedTask, newName: newName)
                 self?.tableView.reloadData()
             }
         })
@@ -136,12 +126,10 @@ extension TasksViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         
+        loadTasksFromRealm()
+        
         if !text.isEmpty {
-            loadTasksFromRealm()
-            
             tasks = tasks?.filter(K.RealmDb.searchByNamePredicate, text).sorted(byKeyPath: K.RealmDb.Task.creationDate)
-        } else {
-            loadTasksFromRealm()
         }
         
         tableView.reloadData()
@@ -174,21 +162,12 @@ private extension TasksViewController {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         
-        alert.addAction(UIAlertAction(title: "Add task", style: .default) { action in
+        alert.addAction(UIAlertAction(title: "Add task", style: .default) { [weak self] action in
             if let taskName = textField?.text,
-               let safeSelectedCategory = self.selectedCategory {
-                do {
-                    try self.realm.write {
-                        let newTask = ToDoTask()
-                        newTask.name = taskName
-                        newTask.creationDate = Date()
-                        safeSelectedCategory.tasks.append(newTask)
-                    }
-                } catch {
-                    print("Error with item saving, \(error)")
-                }
+               let safeSelectedCategory = self?.selectedCategory {
+                self?.createTaskAndSaveToRealm(taskName: taskName, for: safeSelectedCategory)
                 
-                self.tableView.reloadData()
+                self?.tableView.reloadData()
             }
         })
         
@@ -205,6 +184,19 @@ private extension TasksViewController {
         tasks = selectedCategory?.tasks.sorted(byKeyPath: K.RealmDb.Task.creationDate)
     }
     
+    func createTaskAndSaveToRealm(taskName: String, for category: ToDoCategory) {
+        do {
+            try self.realm.write {
+                let newTask = ToDoTask()
+                newTask.name = taskName
+                newTask.creationDate = Date()
+                category.tasks.append(newTask)
+            }
+        } catch {
+            print("Error with Task creating, \(error)")
+        }
+    }
+    
     func deleteTaskFromRealm(_ task: ToDoTask) {
         do {
             try realm.write {
@@ -215,13 +207,23 @@ private extension TasksViewController {
         }
     }
     
-    func editTaskInRealm(_ task: ToDoTask, newName: String) {
+    func changeTaskNameInRealm(_ task: ToDoTask, newName: String) {
         do {
             try realm.write {
                 task.name = newName
             }
         } catch {
             print("Error with task editing, \(error)")
+        }
+    }
+    
+    func changeTaskSelectionMarkInRealm(_ task: ToDoTask) {
+        do {
+            try self.realm.write {
+                task.isDone = !task.isDone
+            }
+        } catch {
+            print("Error with isDone property changing, \(error)")
         }
     }
 }
@@ -236,6 +238,7 @@ private extension TasksViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.tintColor = .white
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
 

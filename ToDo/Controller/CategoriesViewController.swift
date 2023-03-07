@@ -133,7 +133,7 @@ extension CategoriesViewController: UISearchResultsUpdating {
             loadCategoriesFromRealm()
         }
         
-//        tableView.reloadData()   ??????може все тики треба для першого іфа
+        tableView.reloadData()
     }
 }
 
